@@ -141,6 +141,7 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+
     <!-- Favicon -->
     <link href="{{asset('asset1/img/favicon.ico')}}" rel="icon">
 
@@ -172,6 +173,13 @@
 
 	<!-- Main Stylesheets -->
 	<link rel="stylesheet" href="{{asset('asset2/css/style.css')}}"/>
+
+    {{-- asset3 --}}
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i,900%7cRoboto:400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{asset('asset2/css/style.css')}}"/>
+
+
 </head>
 
 <body>
@@ -241,28 +249,66 @@
 
                                         </div>
 
-                                        <div class="row mb-2 mt-3">
 
-                                            <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-5">
-                                                <input type="date" class="form-control" name="daterange">
+                                        <div class="row mb-2 ">
+                                            <div class="row mb-2 mt-3">
+
+                                                <div class="row  mt-3">
+                                                    <div class="col-lg-6 mb-3 mb-lg-0">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="col-md-8">
+                                                                <label for="" class="text-dark">Date de départ</label>
+                                                                <input type="date" class="form-control" name="daterange" value="{{ \Carbon\Carbon::now()->format('Y-m-') . (new \Carbon\Carbon('first day of this month'))->format('d') }}">
+
+
+                                                            </div>
+                                                            <div class="mr-3">
+                                                                <label for="" class="text-dark"></label>
+                                                                <input type="time" class="form-control" name="heure_arrivee" id="heure_arrivee" value="{{ \Carbon\Carbon::now()->format('H:i') }}">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 mb-lg-0 col-lg-4">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="col-md-8">
+                                                                <label for="" class="text-dark">Date d'arriver</label>
+                                                                <input type="date" class="form-control" name="daterange" value="">
+
+
+                                                            </div>
+                                                            <div class="mr-3">
+                                                                <label for="" class="text-dark"></label>
+                                                                <input type="time" class="form-control" name="heure_arrivee" id="heure_arrivee" value="">
+                                                            </div>
+
+                                                            <div class="col-sm-6 col-md-2  mt-3 col-lg-2 offset-2">
+                                                                <input type="submit" class="btn btn-primary btn-block" value="Voir les vehicules">
+                                                            </div>
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                            <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-                                                <input type="text" class="form-control" placeholder="# of People">
-                                            </div>
+
 
                                         </div>
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-4">
-                                                <input type="submit" class="btn btn-primary btn-block" value="Search">
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <label class="control control--checkbox mt-3">
-                                                    <span class="caption">Save this search</span>
-                                                    <input type="checkbox" checked="checked" />
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <label class="control control--checkbox mt-3" style="display: inline-block;">
+                                                    {{-- <input type="checkbox" checked="checked" /> --}}
+                                                    <span class="caption text-dark mt-3" style="display: inline-block; text-decoration: underline; font-size: smaller; color:#D8132;">Enregistrer cette recherche</span>
                                                     <div class="control__indicator"></div>
                                                 </label>
                                             </div>
                                         </div>
+
+
+
                                     </form>
                                 </div>
                 </div>
@@ -288,9 +334,9 @@
                             <div class="row">
                                 <div class="col-12">
                                     <form class="form">
-                                        <div class="row mb-2">
-                                            <div class="col-sm-12 col-md-12 mb-3 mb-lg-0 col-lg-4">
-                                                <label for=""></label>
+                                        <div class="row mb-2 mt-3" >
+                                            <div class="col-sm-12 col-md-8 mb-lg-0 ">
+                                                <label for="destination"  class="text-dark" >lieu de depart</label>
                                                 <select name="destination" id="destination" class="form-control custom-select">
                                                     <option value="">Destination</option>
                                                     <option value="Dakar">Dakar</option>
@@ -310,26 +356,74 @@
                                                 </select>
 
                                             </div>
-                                            <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-5">
+
+                                            <div class="col-sm-12 col-md-12 mb-lg-0 col-lg-4 ">
+                                                <label for="" class="text-dark from-control">Lieu d'arriver différent</label>
                                                 <input type="text" class="form-control" name="daterange">
-                                            </div>
-                                            <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-                                                <input type="text" class="form-control" placeholder="# of People">
                                             </div>
 
                                         </div>
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-4">
-                                                <input type="submit" class="btn btn-primary btn-block" value="Search">
+
+
+                                        <div class="row mb-2 ">
+                                            <div class="row mb-2 mt-3">
+
+                                                <div class="row  mt-3">
+                                                    <div class="col-lg-6 mb-3 mb-lg-0">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="col-md-8">
+                                                                <label for="" class="text-dark">Date de départ</label>
+                                                                <input type="date" class="form-control" name="daterange" value="{{ \Carbon\Carbon::now()->format('Y-m-') . (new \Carbon\Carbon('first day of this month'))->format('d') }}">
+
+
+                                                            </div>
+                                                            <div class="mr-3">
+                                                                <label for="" class="text-dark"></label>
+                                                                <input type="time" class="form-control" name="heure_arrivee" id="heure_arrivee" value="{{ \Carbon\Carbon::now()->format('H:i') }}">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 mb-lg-0 col-lg-4">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="col-md-8">
+                                                                <label for="" class="text-dark">Date d'arriver</label>
+                                                                <input type="date" class="form-control" name="daterange" value="">
+
+
+                                                            </div>
+                                                            <div class="mr-3">
+                                                                <label for="" class="text-dark"></label>
+                                                                <input type="time" class="form-control" name="heure_arrivee" id="heure_arrivee" value="">
+                                                            </div>
+
+                                                            <div class="col-sm-6 col-md-2  mt-3 col-lg-2 offset-2">
+                                                                <input type="submit" class="btn btn-primary btn-block" value="Voir les vehicules">
+                                                            </div>
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                            <div class="col-lg-8">
-                                                <label class="control control--checkbox mt-3">
-                                                    <span class="caption">Save this search</span>
-                                                    <input type="checkbox" checked="checked" />
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <label class="control control--checkbox mt-3" style="display: inline-block;">
+                                                    {{-- <input type="checkbox" checked="checked" /> --}}
+                                                    <span class="caption text-dark mt-3" style="display: inline-block; text-decoration: underline; font-size: smaller; color:#D8132;">Enregistrer cette recherche</span>
                                                     <div class="control__indicator"></div>
                                                 </label>
                                             </div>
                                         </div>
+
+
+
                                     </form>
                                 </div>
                 </div>
@@ -349,8 +443,12 @@
             </button>
         </div>
     </div>
+    @include('layouts._section')
+
 
     @yield('content')
+
+
 
       <!-- JavaScript Libraries -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
