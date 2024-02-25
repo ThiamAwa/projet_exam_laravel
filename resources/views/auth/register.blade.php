@@ -8,6 +8,12 @@
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
+        {{-- telephone --}}
+        <div>
+            <x-input-label for="telephone" :value="__('telephone')" />
+            <x-text-input id="telephone" class="block mt-1 w-full" type="text" name="name" :value="old('telephone')" required autofocus autocomplete="telephone" />
+            <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
+        </div>
 
         <!-- Email Address -->
         <div class="mt-4">

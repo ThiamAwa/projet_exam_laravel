@@ -169,7 +169,7 @@
 
 
 	<!-- Stylesheets -->
-	<link rel="stylesheet" href="{{asset('asset2/css/slicknav.min.css')}}"/>
+
 
 	<!-- Main Stylesheets -->
 	<link rel="stylesheet" href="{{asset('asset2/css/style.css')}}"/>
@@ -177,7 +177,12 @@
     {{-- asset3 --}}
     <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i,900%7cRoboto:400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{asset('asset2/css/style.css')}}"/>
+    {{-- <link rel="stylesheet" href="{{asset('asset3/css/style.css')}}"/> --}}
+
+    {{-- asset2 --}}
+
+
+
 
 
 </head>
