@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('matricule')->unique();
             $table->date('date_achat');
             $table->integer('km_par_defaut');
+            $table->string('photo')->nullable();
             $table->enum('statut', ['en_panne', 'en_service', 'hors_service','en_location'])->default('en_service');
             // $table->foreignId('chauffeur_id')->constrained('chauffeurs');
             $table->unsignedBigInteger('chauffeur_id')->nullable();
             $table->foreign('chauffeur_id')->references('id')->on('chauffeurs');
-
+            $table->foreignIdFor(\App\Models\Categorie::class)->nullable();
 
 
             $table->timestamps();

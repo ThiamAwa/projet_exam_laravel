@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\DashbordController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +23,20 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    // return view('dashboard');
+    if(Auth::id()){
+        $usertype=Auth()->user()->usertype;
+
+        if($usertype==='admin'){
+          return view('admin');
+
+
+        }else if($usertype=='user'){
+          return view('layouts.welcomUser');
+        }else{
+          return view('welcome');
+        }
+      }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -27,5 +44,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//Location
+// Route::get('/Location', [LocationController::class, 'index'])->name('voirVehicule');
+
+
+//chaffeur
+
+Route::resource('/Chauffeur',\App\Http\Controllers\ChauffeurController::class);
+Route::resource('/Vehicule',\App\Http\Controllers\VehiculeController::class);
+Route::resource('/Tarification',\App\Http\Controllers\TarificationController::class);
+Route::resource('/Location',LocationController::class);
+Route::get('/location/Voiture', [LocationController::class, 'ChoisirVehicule'])->name('choixVoiture');
+
+
+
 
 require __DIR__.'/auth.php';

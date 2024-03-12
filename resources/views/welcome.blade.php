@@ -169,7 +169,7 @@
 
 
 	<!-- Stylesheets -->
-
+	{{-- <link rel="stylesheet" href="{{asset('asset2/css/slicknav.min.css')}}"/> --}}
 
 	<!-- Main Stylesheets -->
 	<link rel="stylesheet" href="{{asset('asset2/css/style.css')}}"/>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <form class="form">
+                                    <form class="form" >
                                         <div class="row mb-2 mt-3" >
                                             <div class="col-sm-12 col-md-8 mb-lg-0 ">
                                                 <label for="destination"  class="text-dark" >lieu de depart</label>

@@ -40,15 +40,22 @@
 
 
 	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="{{asset('asset2/css/style.css')}}"/>
+	
 
     {{-- asset3 --}}
     <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i,900%7cRoboto:400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
 
-    {{-- <link rel="stylesheet" href="{{asset('asset3/css/style.css')}}"/> --}}
+    <link rel="stylesheet" href="{{asset('asset3/css/style.css')}}"/>
 
-    {{-- asset2 --}}
 
+    {{-- Utilisateur --}}
+
+    {{-- <link rel="stylesheet" href="{{asset('asset4/css/core-style.css')}}"> --}}
+
+    <link rel="stylesheet" href="{{asset('asset4/style.css')}}">
+
+    <!-- Responsive CSS -->
+    <link href="{{asset('asset4/css/responsive.css')}}" rel="stylesheet">
 
 
 
@@ -66,7 +73,7 @@
 <!-- Spinner End -->
     @include('layouts._navbar')
 
-
+    @include('layouts._sectionClient')
 
 
 
@@ -76,6 +83,8 @@
 
 
       <!-- JavaScript Libraries -->
+
+
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{asset('asset1/lib/wow/wow.min.js')}}"></script>
@@ -89,7 +98,16 @@
 
   <!-- Template Javascript -->
   <script src="{{asset('asset1/js/main.js')}}"></script>
-  {{-- asset2 --}}
+  {{-- asset4 --}}
+    <script src="{{asset('asset4/js/jquery/jquery-2.2.4.min.js')}}"></script>
+    <!-- Popper js -->
+    <script src="{{asset('asset4/js/popper.min.js')}}"></script>
+    <!-- Bootstrap js -->
+    <script src="{{asset('asset4/js/bootstrap.min.js')}}"></script>
+    <!-- Plugins js -->
+    <script src="{{asset('asset4/js/plugins.js')}}"></script>
+    <!-- Active js -->
+    <script src="{{asset('asset4/js/active.js')}}"></script>
 
 
 

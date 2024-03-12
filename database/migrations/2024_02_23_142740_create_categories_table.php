@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicule_id')->constrained('vehicules');
-            $table->string('nom_categorie');
-            $table->foreignId('chauffeur_id')->constrained("chauffeurs");
-
+            $table->string('categorie_permis');
+            $table->string('type_vehicules');
+            $table->string('descriptions');
             $table->timestamps();
         });
     }

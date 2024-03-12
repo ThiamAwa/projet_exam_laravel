@@ -454,3 +454,26 @@ a:focus {
     padding-right: 0;
     border-right: none;
 }
+
+
+
+.product-img:hover .product-quicview {
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+.product-img .product-quicview > a {
+    width: 72px;
+    height: 72px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 36px;
+    line-height: 72px;
+}
+
+.product-img .product-quicview > a:hover {
+    border: 2px solid rgba(255, 255, 255, 1);
+    color: rgba(255, 255, 255, 1);
+}

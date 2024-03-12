@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('numero_permis')->unique();
             $table->date('date_emission');
             $table->date('expiration');
-            $table->string('categorie');
             $table->string('contrat');
-          
+
             $table->timestamps();
         });
     }

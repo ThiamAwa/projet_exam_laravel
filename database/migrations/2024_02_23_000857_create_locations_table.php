@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained("users");
             $table->string('lieu_depart');
             $table->string('lieu_arrivee');
-            $table->dateTime('date_debut');
+            $table->dateTime ('date_debut');
             $table->dateTime('date_fin');
 
             $table->timestamps();
