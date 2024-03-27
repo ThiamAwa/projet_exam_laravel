@@ -25,9 +25,14 @@ class Vehicule extends Model
         return $this->belongsTo(Chauffeur::class,'chauffeur_id');
     }
     public function categories()
-    {
-        return $this->belongsTo(Categorie::class);
-    }
+{
+    return $this->belongsTo(Categorie::class, 'categorie_id');
+}
+public function locations()
+{
+    return $this->hasMany(Location::class);
+}
+
 
 
 

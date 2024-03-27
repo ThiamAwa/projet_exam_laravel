@@ -44,7 +44,7 @@
                         <div class="modal-body">
 
                             <label for="">Matricule</label>
-                            <input type="text" class="block mt-1 w-full form-control" name="matricule" value="{{$listeV->matricule ? $listeV->matricule : old('matricule') }}">
+                            <input type="text" class="block mt-1 w-full form-control" placeholder="exemple : AB 123 CD"  @error('matricule') is-valid @enderror name="matricule" value="{{$listeV->matricule ? $listeV->matricule : old('matricule') }}">
                             <div class="text-danger">
                                 @error('matricule')
                                     {{ $message }}
@@ -53,7 +53,7 @@
 
 
                             <label for="">Date Achat</label>
-                            <input type="date" class="block mt-1 w-full form-control" name="date_achat" value="{{ $listeV->date_achat ? $listeV->date_achat : old('date_achat') }}">
+                            <input type="date" class="block mt-1 w-full form-control" @error('date_achat') is-valid @enderror name="date_achat" value="{{ $listeV->date_achat ? $listeV->date_achat : old('date_achat') }}">
                             <div class="text-danger">
                                 @error('date_achat')
                                     {{ $message }}
@@ -62,7 +62,7 @@
 
 
                             <label for="">Km par Defaut</label>
-                            <input type="text" class="block mt-1 w-full form-control" name="km_par_defaut" value="{{ $listeV->km_par_defaut ?  $listeV->km_par_defaut :  old('km_par_defaut') }}">
+                            <input type="text" class="block mt-1 w-full form-control" @error('km_par_defaut') is-valid @enderror name="km_par_defaut" value="{{ $listeV->km_par_defaut ?  $listeV->km_par_defaut :  old('km_par_defaut') }}">
                             <div class="text-danger">
                                 @error('km_par_defaut')
                                     {{ $message }}
@@ -71,7 +71,7 @@
 
 
                             <label for="">Statut</label>
-                            <select name="statut" id="" class="block mt-1 w-full form-control" valu="{{ $listeV->statut ?  $listeV->status : old('statut') }}">
+                            <select name="statut" id="" class="block mt-1 w-full form-control" valu="{{ $listeV->statut ?  $listeV->status : old('statut') }}" @error('statut') is-valid @enderror>
                                 <option value="">Statut</option>
                                 <option value="en_panne">en_panne</option>
                                 <option value="en_service">en_service</option>
@@ -94,7 +94,7 @@
                                 @endforeach
                             </select>
                             <div class="text-danger">
-                                @error('categorie')
+                                @error('chauffeur_id')
                                     {{ $message }}
                                 @enderror
                             </div>
@@ -106,7 +106,7 @@
                                @endforeach
                            </select>
                            <div class="text-danger">
-                               @error('categorie')
+                               @error('categorie_id')
                                    {{ $message }}
                                @enderror
                            </div>

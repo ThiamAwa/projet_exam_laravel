@@ -43,21 +43,21 @@
                             @method($listeC->exists ? "put" : "post")
                             <div class="modal-body">
                                 <label for="">Nom</label>
-                                <input type="text" class="block mt-1 w-full form-control" name="nom" value="{{$listeC->nom ? $listeC->nom : old('nom') }}">
+                                <input type="text" class="block mt-1 w-full form-control"  @error('nom') is-valid @enderror name="nom" value="{{$listeC->nom ? $listeC->nom : old('nom') }}">
                                 <div class="text-danger">
                                     @error('nom')
                                         {{ $message }}
                                     @enderror
                                 </div>
                                 <label for="">Prenom</label>
-                                <input type="text" class="block mt-1 w-full form-control" name="prenom" value="{{ $listeC->prenom ? $listeC->prenom : old('prenom') }}">
+                                <input type="text" class="block mt-1 w-full form-control"  @error('prenom') is-valid @enderror name="prenom" value="{{ $listeC->prenom ? $listeC->prenom : old('prenom') }}">
                                 <div class="text-danger">
                                     @error('prenom')
                                         {{ $message }}
                                     @enderror
                                 </div>
                                 <label for="">Experience</label>
-                                <select  id="" class="block mt-1 w-full form-control" name="experience" value="{{ $listeC->experience ?  $listeC->experience :  old('experience') }}">
+                                <select  id="" class="block mt-1 w-full form-control"  @error('experience') is-valid @enderror name="experience" value="{{ $listeC->experience ?  $listeC->experience :  old('experience') }}">
                                     <option value="{{ $listeC->experience ?  $listeC->experience :  old('experience') }}"></option>
                                     <option value="Expérience de conduite sécuritaire et professionnelle">Expérience de conduite sécuritaire et professionnelle</option>
                                     <option value="Connaissance des règles de circulation">Connaissance des règles de circulation</option>
@@ -75,7 +75,7 @@
                                     @enderror
                                 </div>
                                 <label for="">numero Permis</label>
-                                <input type="text" class="block mt-1 w-full form-control" name="numero_permis" value="{{ $listeC->numero_permis ?  $listeC->numero_permis : old('numero_permis') }}">
+                                <input type="text" class="block mt-1 w-full form-control"  @error('numero_permis') is-valid @enderror name="numero_permis" value="{{ $listeC->numero_permis ?  $listeC->numero_permis : old('numero_permis') }}">
                                 <div class="text-danger">
                                     @error('numero_permis')
                                         {{ $message }}
@@ -96,7 +96,7 @@
                                     @enderror
                                 </div>
                                  <label for="">Categorie</label>
-                                 <select name="categorie_id" id="" class="block mt-1 w-full form-control">
+                                 <select name="categorie_id" id="" class="block mt-1 w-full form-control"  @error('categorie_id') is-valid @enderror>
                                     {{-- <option value="{{ $listeC->categorie}} {{ old('categorie') }}">Categorie</option> --}}
                                     @foreach ($listeCat as $cat )
                                     <option value="{{ $cat->id }}">{{ $cat->categorie_permis}}</option>
@@ -110,7 +110,7 @@
                                 </div>
 
                                 <label for="">Contrat</label>
-                                <input type="file" class="block mt-1 w-full form-control" name="contrat" value="{{$listeC->contrat ?  $listeC->contrat :old('contrat') }}">
+                                <input type="file" class="block mt-1 w-full form-control" name="contrat"  @error('contrat') is-valid @enderror value="{{$listeC->contrat ?  $listeC->contrat :old('contrat') }}">
                                 <div class="text-danger">
                                     @error('contrat')
                                         {{ $message }}

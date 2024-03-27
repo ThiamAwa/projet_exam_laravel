@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashbordController;
+use App\Http\Controllers\homeController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -53,10 +54,17 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('/Chauffeur',\App\Http\Controllers\ChauffeurController::class);
 Route::resource('/Vehicule',\App\Http\Controllers\VehiculeController::class);
+
 Route::resource('/Tarification',\App\Http\Controllers\TarificationController::class);
 Route::resource('/Location',LocationController::class);
-Route::get('/location/Voiture', [LocationController::class, 'ChoisirVehicule'])->name('choixVoiture');
+Route::post('/submit', [LocationController::class, 'submit'])->name('submit');
 
+// Route::put('/Location/{id}', 'LocationController@update')->name('Location.update');
+// Route::post('/submit', 'LocationController@updateLocation')->name('submit');
+
+
+
+Route::resource('/Home',App\Http\Controllers\homeController::class);
 
 
 

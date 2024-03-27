@@ -24,8 +24,8 @@
 
         <div class="container mt-5">
             <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card">
+                <div class="col-md-12 offset-3">
+                    <div class="card col-md-10 mt-5">
                         <div class="card-header">
                             <span class="h4">Gestion Chauffeur</span>
                             <a href="{{ route('Chauffeur.create') }}" class="btn btn-sm btn-primary float-end">Ajouter</a>
@@ -55,7 +55,7 @@
                                         <td>{{ $lc->numero_permis}}</td>
                                         <td>{{ $lc->date_emission}}</td>
                                         <td>{{ $lc->expiration}}</td>
-                                        <td>{{ $lc->categorie_id}}</td>
+                                        <td>{{ $lc->categories->categorie_permis}}</td>
                                         <td>
                                             <a href="{{ route('Chauffeur.edit',$lc) }}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                                         </td>

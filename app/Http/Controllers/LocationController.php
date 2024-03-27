@@ -7,140 +7,194 @@ use App\Models\User;
 use App\Models\Vehicule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
+        if (Auth::check()) {
+            $usertype = Auth::user()->usertype;
 
-        if(Auth::id()){
-            $usertype=Auth()->user()->usertype;
-
-            if($usertype==='admin'){
-                $listeL=Location::All();
-                return view('layoutsAdmin.listeLoaction',['listeL'=>$listeL]);
-
-
-            }else if($usertype=='user'){
-                $listeL=Location::All();
-                return view('layouts.choisirVehicule',['listeL'=>$listeL]);
-            }else{
-              return redirect()->back();
+            if ($usertype === 'admin') {
+                $listeL = Location::all();
+                return view('layoutsAdmin.listeLoaction', ['listeL' => $listeL]);
+            } elseif ($usertype === 'user') {
+               
+                $listeVUser = Vehicule::all();
+                    $listeL = Location::all();
+                    $locationL = Location::where('client_id', Auth::id())->latest()->first();
+    
+                    $lastLocationId = $locationL ? $locationL->id : null;  
+                    return view('layouts.navigation', [
+                        'listeVUser'=>$listeVUser,
+                        'lastLocationId' => $lastLocationId,
+                        'locationL'=>$locationL,
+                    ]);
+            } else {
+                return redirect()->back();
             }
-          }
+        }
     }
 
-
-
     /**
-     * Show the form for creating a new resource.
+     * Affiche le formulaire de création d'une nouvelle ressource.
      */
     public function create()
     {
         $listeL = new Location();
-        $listeUser=User::All();
-        $listeVehicule=Vehicule::All();
-
-
-
-        return view('layoutsAdmin.listeLocation',
-        ['listeL'=>$listeL,'listeUser'=>$listeUser,'listeVehicule'=>$listeVehicule]);
+        $listeUser = User::all();
+        $listeVehicule = Vehicule::all();
+        return view('layoutsAdmin.listeLocation', ['listeL' => $listeL, 'listeUser' => $listeUser, 'listeVehicule' => $listeVehicule]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Stocke une nouvelle ressource dans le stockage.
      */
     public function store(Request $request)
-    {
-        // $validatedData = $request->validate([
-        //     // 'client_id' => '',
-        //     'lieu_depart' => 'required|string',
-        //     'lieu_arrive' => 'required|string',
-        //     'date_debut' => 'required',
-        //     'date_fin' => 'required',
-        //     'heure_fin' => 'required',
-        //     'heure_debut' => 'required',
+{
+    $validatedData = $request->validate([
+        'lieu_depart' => 'required',
+        'lieu_arrivee' => 'required',
+        'date_debut' => 'required|date',
+        'heure_debut' => 'required',
+    ]);
+    $lastLocation = Location::where('client_id', Auth::id())
+    ->orderByDesc('created_at')
+    ->first();
 
-
-        // ]);
-        // dd($validatedData);
-        $Location = new Location();
-
-        $Location->client_id = Auth::user()->id;
-        $Location->lieu_depart = $request['lieu_depart'];
-
-        $Location->lieu_arrivee = $request['lieu_arrivee'];  // Correction ici
-        $Location->date_debut = $request['date_debut'];
-        $Location->date_fin = $request['date_fin'];
-        $Location->heure_fin = $request['heure_fin'];
-        $Location->heure_debut = $request['heure_debut'];
-        $Location->heure_debut = $request['heure_debut'];
-        $Location->vehicule_id = $request['vehicule_id'];
-
-
-
-        $Location->save();
-
-
-            return  view('layouts.welcomUser')->with('success', 'location ajouté avec succès');
+    if ($lastLocation && Carbon::now()->lessThan($lastLocation->heure_fin)) {
+        return redirect()->route('Location.index')->withInput()->withErrors(['erreur' => 'Impossible de créer une nouvelle location tant que l\'heure d\'arrivée de la dernière location n\'a pas été atteinte.']);
     }
 
+    $location = new Location();
+
+    $location->client_id = Auth::user()->id;
+    $location->lieu_depart = $validatedData['lieu_depart'];
+    $location->lieu_arrivee = $validatedData['lieu_arrivee'];
+    $location->date_debut = $validatedData['date_debut'];
+    $location->date_fin = $request['date_fin'];
+    $location->heure_debut = $validatedData['heure_debut'];
+    $location->heure_fin = $request['heure_fin'];
+
+    $location->save();
+
+    return redirect()->route('Location.index')->with('success', 'Location ajoutée avec succès');
+}
+
+
     /**
-     * Display the specified resource.
+     * Affiche la ressource spécifiée.
      */
     public function show(string $id)
     {
-
+        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $ListeL = Location::find($id);
-        $listeUser = User::all();
-        $listeVehicule = Vehicule::all();
+   
+public function edit($id)
+{
+    
+    $vehicule = Vehicule::findOrFail($id);
+    
+   
+    $locationL = Location::where('client_id', Auth::id())->latest()->first();
+    
+   
+    $lastLocationId = $locationL ? $locationL->id : null;
+    
+   
+    return view('layouts.navigation', [
+        'vehicule' => $vehicule,
+        'lastLocationId' => $lastLocationId,
+        'locationL'=>$locationL,
+    ]);
+}
 
-        return view('layouts.modif', compact('ListeL', 'listeUser', 'listeVehicule'));
-    }
 
-
-
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
-        $ListeL = Location::findOrFail($id);
+        $listeL = Location::find($id);
 
-        $ListeL->client_id = Auth::user()->id;
-        $ListeL->lieu_depart = $request['lieu_depart'];
+        $listeL->lieu_depart = $request->input('lieu_depart');
+        $listeL->lieu_arrivee = $request->input('lieu_arrivee');
+        $listeL->date_debut = $request->input('date_debut');
+        $listeL->date_fin = $request->input('date_fin');
+        $listeL->heure_debut = $request->input('heure_debut');
+        $listeL->heure_fin = $request->input('heure_fin');
 
-        $ListeL->lieu_arrivee = $request['lieu_arrivee'];  // Correction ici
-        $ListeL->date_debut = $request['date_debut'];
-        $ListeL->date_fin = $request['date_fin'];
-        $ListeL->heure_fin = $request['heure_fin'];
-        $ListeL->heure_debut = $request['heure_debut'];
-        $ListeL->heure_debut = $request['heure_debut'];
-        $ListeL->vehicule_id = $request['vehicule_id'];
+        $listeL->save();
 
-
-        $ListeL->save();
-
-
-            return  view('layouts.sectionClient')->with('success', 'location ajouté avec succès');
+        return redirect()->route('Location.index')->with('success', 'Location mise à jour avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime la ressource spécifiée du stockage.
      */
     public function destroy(string $id)
     {
         //
     }
+
+    public function submit(Request $request)
+    {
+      
+        $data = $request->all();
+    
+        
+        $lieu_depart = $data['lieu_depart'] ?? null;
+        $lieu_arrivee = $data['lieu_arrivee'] ?? null;
+        $date_debut = $data['date_debut'] ?? null;
+        $date_fin = $data['date_fin'] ?? null;
+        $heure_debut = $data['heure_debut'] ?? null;
+        $heure_fin = $data['heure_fin'] ?? null;
+
+     
+    
+       
+        $vehicleId = $request->input('vehicle_id');
+    
+        $lastLocationId = $request->input('last_location_id');
+        
+       
+        $locationL = Location::where('client_id', auth()->id())->latest()->first();
+    
+        
+        if ($locationL) {
+            
+            $locationL->update([
+                'client_id' => auth()->id(),
+                'lieu_depart' => $lieu_depart,
+                'lieu_arrivee' => $lieu_arrivee,
+                'date_debut' => $date_debut,
+                'date_fin' => $date_fin,
+                'heure_debut' => $heure_debut,
+                'heure_fin' => $heure_fin,
+                'vehicule_id' => $vehicleId,
+            ]);
+        } else {
+            
+            Location::create([
+                'vehicule_id' => $vehicleId,
+                'client_id' => auth()->id(),
+                'lieu_depart' => $lieu_depart,
+                'lieu_arrivee' => $lieu_arrivee,
+                'date_debut' => $date_debut,
+                'date_fin' => $date_fin,
+                'heure_debut' => $heure_debut,
+                'heure_fin' => $heure_fin,
+            ]);
+        }
+        $vehicle = Vehicule::find($vehicleId);
+        if ($vehicle) {
+            $vehicle->statut = 'en_location';
+            $vehicle->save();
+        }
+       
+        return redirect()->route('Location.index')->with('success', 'La location a été mise à jour avec succès.');
+    }
+    
 }

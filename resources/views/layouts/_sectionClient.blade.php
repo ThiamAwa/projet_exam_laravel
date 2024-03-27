@@ -1,232 +1,398 @@
 <style>
-    .option-box {
-        border: 1px solid #ccc;
-        border-radius: 10px;
-
+    /* Styles CSS */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
     }
 
-    .option-content {
-        font-size: 0.8rem;
-        /* Ajustez la taille du texte selon vos préférences */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
     }
 
-    .checkbox {
-        margin-right: 5px;
+    .section_heading h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .karl-new-arrivals .single_gallery_item {
+        margin-bottom: 30px;
+    }
+
+    .product-img-with-matricule {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .img-container {
+        position: relative;
+    }
+
+    .matricule-overlay {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .message-container {
+        text-align: center;
+        display: none;
+    }
+
+    .message-container table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+    .message-container th,
+    .message-container td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .message-container th {
+        background-color: #f2f2f2;
+    }
+
+    .message-container th.price,
+    .message-container td.price {
+        text-align: right;
+    }
+
+
+    .product-img-with-matricule img {
+        max-width: 100%;
+        height: auto;
+    }
+
+
+    #selectedImage {
+        border: 2px solid red;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+
+    .custom-btn-width {
+        width: 200px;
+    }
+
+    .checkbox-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .checkbox-item {
+        cursor: pointer;
+        padding: 10px;
+        margin-bottom: 5px;
+        border: 1px solid transparent;
+    }
+
+    .checkbox-item:hover {
+        border-color: black;
+        transition: border-color 0.3s ease;
+    }
+
+    .checkbox-item.checked {
+        background-color: lightblue;
     }
 </style>
 
-<section class="new_arrivals_area section_padding_100_0 clearfix">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="section_heading text-center">
-                    <h2>Quel Vehicule choisir?</h2>
-                </div>
+</style>
+</head>
+
+<body>
+
+    <section class="new_arrivals_area section_padding_100_0 clearfix mt-5">
+        <div class="container">
+            <div class="section_heading text-center">
+                <h2>Quel Vehicule choisir?</h2>
+            </div>
+
+            <div class="row karl-new-arrivals">
+
+                @foreach ($listeVUser as $vehicule)
+                    @if ($vehicule->statut == 'en_service')
+                        <div class="col-12 col-sm-6 col-md-4 single_gallery_item women wow fadeInUpBig"
+                            data-wow-delay="0.2s">
+
+                            <div class="product-img-with-matricule">
+                                <a href="{{ route('Location.edit', $vehicule->id) }}"
+                                    onclick="redirectWithImage(event, '{{ $vehicule->id }}')">
+                                    <div class="img-container">
+                                        <img src="{{ asset('/storage/images/' . $vehicule->photo) }}"
+                                            class="img-fluid h-100"
+                                            data-photo="{{ asset('/storage/images/' . $vehicule->photo) }}">
+                                        <div class="matricule-overlay">{{ $vehicule->matricule }}</div>
+                                    </div>
+                                </a>
+                                <div class="product-quicview">
+                                    <a href=""><i class="ti-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <div class="row karl-new-arrivals">
-            @foreach ($listeVUser as $vehicule)
-                @if ($vehicule->statut == 'en_service')
-                    <div class="col-12 col-sm-6 col-md-4 single_gallery_item women wow fadeInUpBig" data-wow-delay="0.2s">
-                        <!-- Product Image -->
-                        <div class="product-img">
-
-                            <a href="" data-toggle="modal" data-target="#quickview{{ $vehicule->id }}">
-                                <img src="{{ asset('/storage/images/' . $vehicule->photo) }}" class="img-fluid h-100"
-                                    data-photo="{{ asset('/storage/images/' . $vehicule->photo) }}">
-                            </a>
+    </section>
 
 
+    @foreach ($listeVUser as $vehicule)
+        @if ($vehicule->statut == 'en_service')
+            <form action="{{ route('submit') }}" method="post">
+                @csrf
 
-                            <div class="product-quicview">
-                                <a href="" data-toggle="modal" data-target="#quickview{{ $vehicule->id }}"><i
-                                        class="ti-plus"></i></a>
-                            </div>
+                <input type="hidden" name="vehicle_id" value="{{ $vehicule->id }}">
+                <input type="hidden" name="last_location_id" value="{{ $lastLocationId }}">
+
+                <input type="hidden" name="lieu_depart" placeholder="Lieu de départ"
+                    value="{{ $locationL->lieu_depart ?? '' }}">
+                <input type="hidden" name="lieu_arrivee" placeholder="Lieu d'arrivée"
+                    value="{{ $locationL->lieu_arrivee ?? '' }}">
+                <input type="hidden" name="date_debut" placeholder="Date de début"
+                    value="{{ $locationL->date_debut ?? '' }}">
+                <input type="hidden" name="date_fin" placeholder="Date de fin"
+                    value="{{ $locationL->date_fin ?? '' }}">
+                <input type="hidden" name="heure_debut" placeholder="Heure de début"
+                    value="{{ $locationL->heure_debut ?? '' }}">
+                <input type="hidden" name="heure_fin" placeholder="Heure de fin"
+                    value="{{ $locationL->heure_fin ?? '' }}">
+                <div class="container-fluid mt-5" id="imageMessageContainer" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img id="selectedImage" src="#" alt="Image sélectionnée">
                         </div>
+                        <div class="col-md-6 bg-white" style="border-radius: 20px;">
+                            <div class="message-container d-flex justify-content-between align-items mt-3 ">
 
-                        <!-- Product Description -->
-                        <div class="product-description mb-3">
-                            Matricule :
-                            <h4 class="product-price">{{ $vehicule->matricule }}</h4>
-                            {{-- <p>Jeans midi cocktail dress</p> --}}
-                            <a href="#" class="add-to-cart-btn">La recommandation du jour</a>
-                            <button class="btn btn-danger">Valider avec cette vehicule</button>
-                        </div>
-                    </div>
-
-                    <!-- Modal associé à chaque véhicule -->
-                    <div class="modal fade" id="quickview{{ $vehicule->id }}" tabindex="-1" role="dialog"
-                        aria-labelledby="quickview{{ $vehicule->id }}" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <!-- Contenu de votre modal -->
-                                <div class="modal-body">
-                                    <div class="quickview_pro_img">
-                                        <img src="{{ asset('/storage/images/' . $vehicule->photo) }}" class="img-fluid">
+                                <div class="checkbox-container mt-5">
+                                    <h6 class="">Optient de Paiement</h6>
+                                    <div class="checkbox-item mt-3">
+                                        <input type="checkbox"  id="checkbox1" onchange="toggleCheckbox(this)">
+                                        <label for="checkbox1">Meilleur prix</label>
                                     </div>
-                                    <div class="quickview_pro_des">
-                                        <h4 class="title">Option de paiement</h4>
-                                        <div class="top_seller_product_rating mb-15">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        </div>
+                                    <div class="checkbox-item mt-3">
+                                        <input type="checkbox" id="checkbox2" onchange="toggleCheckbox(this)">
+                                        <label for="checkbox2">Restez flexible</label>
+                                    </div>
 
-                                        <h5 class="price">Meilleur Prix <span>Restez flexible</span></h5>
 
+                                </div>
+                                <div class="mt-5">
+                                    <h6>Mode de paiement</h6>
+                                    <div class="checkbox-item mt-3">
+                                        <input type="checkbox" id="carte" onchange="toggleCheckbox(this)">
+                                        <label for="checkbox1">
+                                            <img src="{{ asset('img/carte.png') }}" alt="Logo Cartes Bancaires"
+                                                style="width: 50px; height: 50px; margin-right: 10px;">
+                                            Carte bancaires
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-item mt-3">
+                                        <input type="checkbox" id="wave" onchange="toggleCheckbox(this)">
+                                        <label for="checkbox2">
+                                            <img src="{{ asset('img/wave.jpg') }}" alt="Logo Wave"
+                                                style="width: 40px; height: 30px; margin-right: 10px;">
+                                            Wave
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-item mt-3">
+                                        <input type="checkbox" id="money" onchange="toggleCheckbox(this)">
+                                        <label for="checkbox3">
+                                            <img src="{{ asset('img/money.jpg') }}" alt="Logo Orange Money"
+                                                style="width: 30px; height: 30px; margin-right: 10px;">
+                                            Orange Money
+                                        </label>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    {{-- <form action="{{ route('Location.update',['id' => $Location->id] ) }}" method="post">
 
-                                        @csrf
-                                        @method('put')
-                                        <input type="text" name="id" id="" value="{{ $location->id ? $location->id : old('id') }}">
-                                        <input type="text" name="client_id" value="{{ Auth::user()->id }}">
-                                        <input type="text" id="address1" class="form-control" value="{{ $location->lieu_depart ? $location->lieu_depart : old('lieu_depart') }}"
-                                        name="lieu_depart" >
-                                        <input type="text" id="address2" class="form-control"
-                                        name="lieu_arrivee" value="{{ $location->lieu_arrivee ? $location->lieu_arrivee : old('lieu_arrivee') }}">
-                                        <input type="date" class="form-control"
-                                        id="departureDate" name="date_debut"
-                                        value="{{ $location->date_debut ? $location->date_debut : old('date_debut') }}">
-                                        <input type="time" class="form-control"
-                                        name="heure_debut" id="departureTime"
-                                        value="{{ $location->heure_debut ? $location->heure_debut : old('heure_debut') }}">
-                                        <input type="date" class="form-control"
-                                        name="date_fin"  id="arrivalDate" value="{{ $location->date_fin ? $location->date_fin : old('date_fin') }}"
-                                        >
-                                        <input type="time" class="form-control"
-                                             name="heure_fin" id="arrivalTime" value="{{ $location->heure_fin ? $location->heure_fin : old('heure_fin') }}">
-                                        <input type="text" name="vehicule_id">
-                                        <button type="submit" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Enregister</button>
-                                    </form> --}}
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalToggle">Detail Paiement</button>
-                                </div>
                             </div>
+                            <div id="messageBox" class="fw-bold"></div>
+                            <div id="messageBox1" class="fw-bold"></div>    
+                            <div class="container d-flex justify-content-between align-items-center mt-3">
+                                <a class="btn btn-primary custom-btn-width" data-bs-target="#exampleModalToggle"
+                                    data-bs-toggle="modal">Detail prix</a>
+                                   
+                                <button type="submit" class="btn btn-primary custom-btn-width">Valider</button>
+
+                            </div>
+
                         </div>
+
+
+
+
                     </div>
-                @endif
-            @endforeach
-        </div>
-    </div>
+                </div>
+
+
+            </form>
+        @endif
+    @endforeach
 
     <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
         tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">DÉTAILS DU PRIX</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Detail Prix</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table>
-                        <tr>
-                            <th>Description</th>
-                            <th class="price">Prix</th>
-                        </tr>
-                        <tr>
-                            <td>Frais de location</td>
-                            <td class="price">
-                        <tr>
-                            <th>Description</th>
-                            <th class="price">Prix</th>
-                        </tr>
-                        <tr>
-                            <td>Frais de location</td>
-                            <td class="price">249,651.82</td>
-                        </tr>
-                        <tr>
-                            <td>4 Jours de location </td>
-                            <td class="price"> 249,651.82 XOF</td>
-                        </tr>
-                        <tr>
-                            <td>Taxes (TVA) et frais</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Frais de location</td>
-                            <td class="price">15,347.52 XOF</td>
-                        </tr>
-                        <tr>
-                            <td>Frais de pneus et de batterie</td>
-                            <td class="price">52.48 XOF
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Surtaxe Location</td>
-                            <td class="price">5,108.53 XOF</td>
-                        </tr>
-                        <tr>
-                            <td>Redevance d'immatriculation pour véhicules</td>
-                            <td class="price">2,300.70 XOF</td>
-                        </tr>
-                        <tr>
-                            <td>Redevance de recouvrement des frais Privilège</td>
-                            <td class="price">25,236.56 XOF</td>
-                        </tr>
-                        <tr>
-                            <td>Total (TTC)</td>
-                            <td class="price">297,707.43 XOF</td>
-                        </tr>
-                    </table>
-
-
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <th>Description</th>
+                                <th class="price">Prix</th>
+                            </tr>
+                            <tr>
+                                <td>Frais de location</td>
+                                <td class="price">249,651.82</td>
+                            </tr>
+                            <tr>
+                                <td>heure de location </td>
+                                <td class="price"> 249,651.82 XOF</td>
+                            </tr>
+                            <tr>
+                                <td>Taxes (TVA) et frais</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Frais de location</td>
+                                <td class="price">15,347.52 XOF</td>
+                            </tr>
+                            <tr>
+                                <td>Frais de pneus et de batterie</td>
+                                <td class="price">52.48 XOF</td>
+                            </tr>
+                            <tr>
+                                <td>Surtaxe Location</td>
+                                <td class="price">5,108.53 XOF</td>
+                            </tr>
+                            <tr>
+                                <td>Redevance d'immatriculation pour véhicules</td>
+                                <td class="price">2,300.70 XOF</td>
+                            </tr>
+                            <tr>
+                                <td>Redevance de recouvrement des frais Privilège</td>
+                                <td class="price">25,236.56 XOF</td>
+                            </tr>
+                            <tr>
+                                <td>Total (TTC)</td>
+                                <td class="price">297,707.43 XOF</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-target="#exampleModalToggle2"
-                        data-bs-toggle="modal">Femer</button>
+                    <a class="btn btn-primary" data-bs-target="#exampleModalToggle2"
+                        data-bs-toggle="modal">Fermer</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-        tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Hide this modal and show the first with the button below.
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back
-                        to first</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Open first modal</button> --}}
-
-</section>
 
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Récupérer toutes les images avec l'attribut data-photo
-        var images = document.querySelectorAll('img[data-photo]');
 
-        // Ajouter un gestionnaire d'événement clic à chaque image
-        images.forEach(function(image) {
-            image.addEventListener('click', function() {
-                // Récupérer l'URL de la photo à partir de l'attribut data-photo
-                var photoUrl = this.getAttribute('data-photo');
+    <!-- Script JavaScript pour effectuer la redirection -->
+    <script>
+        function redirectWithImage(event, lastLocationId, vehicleId) {
 
-                // Remplacer le contenu du modal avec la photo cliquée
-                var modalImage = document.querySelector(
-                    '.modal.fade.show .quickview_pro_img img');
-                modalImage.src = photoUrl;
+            event.preventDefault();
+
+
+            var selectedImage = document.getElementById('selectedImage');
+
+
+            var url = '/vehicule/' + vehicleId + lastLocationId;
+            window.history.pushState({}, '', url);
+
+
+            selectedImage.src = event.currentTarget.querySelector('img').src;
+
+
+            document.getElementById('imageMessageContainer').style.display = 'block';
+            document.querySelector('.message-container').style.display = 'block';
+
+
+            selectedImage.style.border = '2px solid black';
+            selectedImage.style.borderRadius = '5px';
+            selectedImage.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.3)';
+
+
+            document.getElementById('imageMessageContainer').scrollIntoView({
+                behavior: 'smooth'
             });
+
+
+            $.ajax({
+                url: '{{ route('submit') }}',
+                type: 'POST',
+                data: {
+                    last_location_id: lastLocationId,
+                    vehicle_id: vehicleId,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log(response);
+
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+
+                }
+            });
+        }
+    </script>
+   <script>
+    var optientMessage = '';
+    var modeMessage = '';
+
+    function toggleCheckbox(checkbox) {
+        var messageBox = document.getElementById('messageBox');
+        var messageBox1 = document.getElementById('messageBox1');
+
+        var checkboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]');
+        checkboxes.forEach(function(item) {
+            if (item !== checkbox) {
+                item.checked = false;
+            }
         });
-    });
+
+        if (checkbox.id === 'checkbox1' && checkbox.checked) {
+            optientMessage = '20000 Franc CFA';
+        } else if (checkbox.id === 'checkbox2' && checkbox.checked) {
+            optientMessage = '25000 Franc CFA';
+        }
+
+        if (checkbox.id === 'carte' && checkbox.checked) {
+            modeMessage = 'Votre mode de paiement par carte bancaire a été enregistré avec succès';
+        } else if (checkbox.id === 'wave' && checkbox.checked) {
+            modeMessage = 'Votre mode de paiement par Wave a été enregistré avec succès';
+        } else if (checkbox.id === 'money' && checkbox.checked) {
+            modeMessage = 'Votre mode de paiement par Orange Money a été enregistré avec succès';
+        }
+
+        messageBox.innerText = optientMessage;
+        messageBox1.innerText = modeMessage;
+    }
 </script>
+
+    

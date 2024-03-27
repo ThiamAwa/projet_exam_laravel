@@ -19,4 +19,13 @@ class Location extends Model
         'lieu_arrivee',
         'vehicule_id'
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'client_id');
+    }
+
+    public function vehicule()
+    {
+        return $this->belongsTo(Vehicule::class,'vehicule_id');
+    }
 }

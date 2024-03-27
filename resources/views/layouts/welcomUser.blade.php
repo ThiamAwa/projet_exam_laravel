@@ -148,12 +148,12 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap"
-        rel="stylesheet">
+    {{-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> --}}
+    {{-- <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap" --}}
+        {{-- rel="stylesheet"> --}}
 
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -245,6 +245,11 @@
                                         alt="">
                                 </div>
                             </div>
+                            @if($errors->has('erreur'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('erreur') }}
+                                </div>
+                            @endif
                             <div class="row">
                                 <div class="col-12">
                                     <form class="form" action="{{route('Location.store') }}" method="POST">
@@ -325,21 +330,13 @@
 
 
                                                             </div>
-                                                            <div class="text-danger">
-                                                                @error('date_fin')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </div>
+
                                                             <div class="mr-3">
                                                                 <label for="" class="text-dark"></label>
                                                                 <input type="time" class="form-control"
                                                                     name="heure_fin" id="arrivalTime" readonly>
                                                             </div>
-                                                            <div class="text-danger">
-                                                                @error('heure_fin')
-                                                                    {{ $message }}
-                                                                @enderror
-                                                            </div>
+
 
                                                             <div class="col-sm-6 col-md-2  mt-3 col-lg-2 offset-2">
                                                                 {{-- <input type="submit" class="btn btn-primary btn-block" value="Voir les vehicules">  --}}
@@ -371,13 +368,13 @@
                                                         cette recherche</span>
                                                     <button class="btn btn-danger" type="submit"
                                                         style="display: inline-block; text-decoration: underline; font-size: smaller; color:#D8132;"
-                                                        >Enregister</button>
+                                                        >Voir Vehicule</button>
                                                     <div class="control__indicator"></div>
                                                 </label>
                                             </div>
-                                            <div class="col-lg-3 offset-5 float-end">
-                                                <a href="{{ route('Vehicule.index')}}"  >Voir les vehicules</a>
-                                            </div>
+                                            {{-- <div class="col-lg-3 offset-5 float-end">
+                                                <a href=""  >Voir les vehicules</a>
+                                            </div> --}}
                                         </div>
 
 
@@ -525,15 +522,11 @@
                                 isNaN(location2.lon)) {
                                 var distance = haversineDistance(location1, location2);
                                 var estimatedTime = estimateTravelTime(
-                                    distance); // Estimation du temps de trajet en heures
+                                    distance);
 
                                 var distanceOutput = document.getElementById("distanceOutput");
                                 distanceOutput.innerHTML = 'La distance est parcourir est de : ' + distance
                                     .toFixed(2) + ' km';
-
-
-                                // Afficher la boîte modale
-                                $('#exampleModaldest').modal('show');
 
                                 var marker1 = L.marker([location1.lat, location1.lon]).addTo(map);
                                 var marker2 = L.marker([location2.lat, location2.lon]).addTo(map);
@@ -552,14 +545,14 @@
                                 // Mettre à jour la date et l'heure d'arrivée après le calcul de la distance
                                 updateArrivalDateTime(estimatedTime);
                             } else {
-                                alert('Coordonnées invalides');
+                                console.error('Coordonnées invalides');
                             }
                         } else {
-                            alert('voulez vous confimer');
+                            console.error('voulez vous confimer');
                         }
                     });
                 } else {
-                    alert('Adresse 1 non trouvée. Erreur : ' + error1);
+                    console.error('Adresse 1 non trouvée. Erreur : ' + error1);
                 }
             });
         }
@@ -610,6 +603,8 @@
             return deg * (Math.PI / 180);
         }
     </script>
+
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('asset1/lib/wow/wow.min.js') }}"></script>

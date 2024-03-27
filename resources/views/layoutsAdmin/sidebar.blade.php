@@ -3,7 +3,7 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav mt-5">
-                    <a class="nav-link" href="?page=accueil">
+                    <a class="nav-link" href="{{ route('Home.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
                         Accueil
                     </a>

@@ -43,13 +43,9 @@ class ChauffeurController extends Controller
                 'prenom' => 'required|string',
                 'experience' => 'required|string',
                 'numero_permis' => 'required|string|unique:chauffeurs',
-                'date_emission' => [
-                    'required',
-                    'date',
-                    'before_current_date'
-                ],
+                'date_emission' => 'required|date|before:today',
                 'expiration' => 'required|date',
-                'categorie_id' => 'c',
+                'categorie_id' => 'required',
                 'contrat' => 'required|mimes:pdf',
             ]);
 

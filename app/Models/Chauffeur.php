@@ -16,17 +16,19 @@ class Chauffeur extends Model
         'numero_permis',
         'date_emission',
         'expiration',
-        'categorie_id', 
+        'categorie_id',
         'contrat',
     ];
 
     public function vehicules()
     {
-        return $this->hasOne(Vehicule::class);
+        return $this->hasOne(Vehicule::class,'vehicule_id');
     }
 
     public function categories()
     {
-        return $this->belongsTo(Categorie::class, 'categorie_id');
+        return $this->belongsTo(Categorie::class,'categorie_id');
     }
+
+
 }
